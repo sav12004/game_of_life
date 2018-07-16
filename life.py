@@ -7,47 +7,67 @@ def grid_dim(a):
 
 def filled_grid(grid):
     x = [[1,1,0,0,0,0,0],
-        [1,1,1,0,0,0,0],
+        [1,1,0,0,0,0,0],
         [0,0,1,1,0,0,0],
         [0,0,1,1,1,0,0],
         [0,0,1,1,0,0,0],
-        [1,1,1,0,0,0,0],
+        [1,1,0,0,0,0,0],
         [1,1,0,0,0,0,0]]
     grid[5:12, 10:17] = x   
 
     return grid
 
 def update(grid,size):
+
+    grid2 = np.zeros((size,size))
+
     for i in range(size):
         for j in range(size):
             n = 0
             if i==0 and j==0:
                 n = (grid[i,j+1] + grid[i+1,j+1] + grid[i+1,j])
-            elif i==100 and j==100:
+            elif i==(size-1) and j==(size-1):
                 n = (grid[i-1,j] + grid[i-1,j-1] + grid[i,j-1])
-            elif i==0 and j==100:
-                n = 
-            elif i==100 and j==0:
-            elif i==0 and (j!=0 or j!=100):
-            elif i==100 and (j!=0 or j!=100):
-            elif (i!=0 or i!=100) and j==0:
-            elif (i!=0 or i!=100) and j==100:
+            elif i==0 and j==(size-1):
+                n = (grid[i,j-1] + grid[i+1,j-1] + grid[i+1,j])
+            elif i==(size-1) and j==0:
+                n = (grid[i-1,j] + grid[i-1,j+1] + grid[i,j+1])
+            elif i==0 and (j!=0 and j!=(size-1)):
+                n = (grid[i,j-1] + grid[i+1,j-1] + grid[i+1,j] + grid[i+1,j+1] + grid[i,j+1])
+            elif i==(size-1) and (j!=0 and j!=(size-1)):
+                n = (grid[i,j-1] + grid[i-1,j-1] + grid[i-1,j] + grid[i-1,j+1] + grid[i,j+1])
+            elif (i!=0 and i!=(size-1)) and j==0:
+                n = (grid[i-1,j] + grid[i-1,j+1] + grid[i,j+1] + grid[i+1,j+1] + grid[i+1,j]) 
+            elif (i!=0 and i!=(size-1)) and j==(size-1):
+                n = (grid[i-1,j] + grid[i-1,j-1] + grid[i,j-1] + grid[i+1,j-1] + grid[i+1,j])
             else:
-
-
-
+                n = (grid[i,j-1] + grid[i,j+1] + grid[i-1,j] + grid[i+1,j] + grid[i-1,j-1] + grid[i-1,j+1] + grid[i+1,j-1] + grid[i+1,j+1])
+  
+            if grid[i,j]==1:
+                if (n<2) or (n>3):
+                    grid2[i,j] = 0
+                else:
+                    grid2[i,j] = 1
+            else:
+                if n==3:
+                    grid2[i,j] = 1
+            
     return grid2
 
 
 def main():
     alive = 1
     dead = 0
+    size = 100
 
     grid = grid_dim(100)
     grid2 = filled_grid(grid)
+    grid3 = update(grid2,size)    
     
 
-    plt.imshow(grid2,cmap='binary')
+
+
+    plt.imshow(grid3,cmap='binary')   
     plt.show()
 
 if __name__ == '__main__':
