@@ -7,19 +7,19 @@ def grid_dim(a):
 
 def filled_grid(grid):
     x = [[1,1,0,0,0,0,0],
-        [1,1,0,0,0,0,0],
+        [1,1,1,0,0,0,0],
         [0,0,1,1,0,0,0],
         [0,0,1,1,1,0,0],
         [0,0,1,1,0,0,0],
-        [1,1,0,0,0,0,0],
+        [1,1,1,0,0,0,0],
         [1,1,0,0,0,0,0]]
     grid[5:12, 10:17] = x   
 
     return grid
 
-def update(grid,size):
+def update(frameNum, img, grid, size):
 
-    grid2 = np.zeros((size,size))
+    newGrid = np.zeros((size,size))
 
     for i in range(size):
         for j in range(size):
@@ -45,29 +45,31 @@ def update(grid,size):
   
             if grid[i,j]==1:
                 if (n<2) or (n>3):
-                    grid2[i,j] = 0
+                   newGrid[i,j] = 0
                 else:
-                    grid2[i,j] = 1
+                   newGrid[i,j] = 1
             else:
                 if n==3:
-                    grid2[i,j] = 1
-            
-    return grid2
+                   newGrid[i,j] = 1
+
+    img.set_data(newGrid)
+    grid[:]=newGrid[:]
+    return img
 
 
 def main():
-    alive = 1
-    dead = 0
-    size = 100
+  
+
+    N = 100
+    updateInterval =500
 
     grid = grid_dim(100)
     grid2 = filled_grid(grid)
-    grid3 = update(grid2,size)    
-    
 
-
-
-    plt.imshow(grid3,cmap='binary')   
+    #Animation
+    fig,ax = plt.subplots()
+    img = ax.imshow(grid2)
+    anim = animation.FuncAnimation(fig,update,fargs=(img, grid2, N, ),interval=updateInterval)
     plt.show()
 
 if __name__ == '__main__':
