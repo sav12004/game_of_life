@@ -1,10 +1,13 @@
+#importing necessary libriaries
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+#function to fill grid of specific size with zeros 
 def grid_dim(a):
     return np.zeros((a,a))
 
+#function fills a grid with pattern
 def filled_grid(grid):
     x = [[1,1,0,0,0,0,0],
         [1,1,1,0,0,0,0],
@@ -17,10 +20,13 @@ def filled_grid(grid):
 
     return grid
 
+
 def update(frameNum, img, grid, size):
 
     newGrid = np.zeros((size,size))
-
+    
+    #looping through the Grid and 
+    #calculating the sum of live neighbours
     for i in range(size):
         for j in range(size):
             n = 0
@@ -43,6 +49,7 @@ def update(frameNum, img, grid, size):
             else:
                 n = (grid[i,j-1] + grid[i,j+1] + grid[i-1,j] + grid[i+1,j] + grid[i-1,j-1] + grid[i-1,j+1] + grid[i+1,j-1] + grid[i+1,j+1])
   
+            #Game Rules based on neighbour count
             if grid[i,j]==1:
                 if (n<2) or (n>3):
                    newGrid[i,j] = 0
@@ -59,7 +66,6 @@ def update(frameNum, img, grid, size):
 
 def main():
   
-
     N = 100
     updateInterval =500
 
